@@ -10,7 +10,7 @@ function listUsers(){
 }
 
 module.exports = {
-    addUser,
-    listUsers,
+    add:addUser,
+    list:listUsers,
 };
 

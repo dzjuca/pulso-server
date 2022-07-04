@@ -1,16 +1,16 @@
 const express = require('express');
 const response = require('../../network/response');
-const controller = require('./controller');
+const controller = require('./controller')
 const router = express.Router();
 
-router.post('/', (req, res, next) => {
+router.post('/', (req, res) => {
     const body = req.body;
     controller.addUser(body)
         .then((data) => {
             response(req, res, data, 201);
         })
         .catch((e) => {
-            next(e);
+            console.error(e);
         });
 });
 

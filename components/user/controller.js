@@ -7,11 +7,11 @@ function addUser(body){
     const user = {
         name:body.name
     };
-    return store.addUser(user);
+    return store.add(user);
 }
 
 function listUsers(){
-    return store.listUsers();
+    return store.list();
 }
 
 module.exports = {
