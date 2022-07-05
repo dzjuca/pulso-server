@@ -7,7 +7,8 @@ async function addUser(user){
         const response = await newUser.save();
         return response;
     } catch (error) {
-        throw boom.internal();
+        //throw boom.internal();
+        throw error;
     }
 }
 
@@ -35,7 +36,7 @@ async function updateUser(userId, newUserData){
         const response = await User.updateOne({ _id: userId},{ $set: newUserData });
         return response;
     } catch (error) {
-        return boom.internal(error);
+        throw boom.internal();
     }
 }
 

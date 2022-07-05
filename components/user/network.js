@@ -30,14 +30,15 @@ function listUsers (req, res, next){
         });
 }
 
-async function getUser(req, res, next){
-    try {
-        const { userId } = req.params;
-        const user = await controller.getUser(userId);
-        return response.success(req, res, user, 200);
-    } catch (error) {
-        next(error);
-    }
+function getUser(req, res, next){
+    const { userId } = req.params;
+    controller.getUser(userId)
+        .then((user) => {
+            response.success(req, res, user, 200);
+        })
+        .catch((e) => {
+            next(e);
+        });
 }
 
 function updateUser(req, res, next){

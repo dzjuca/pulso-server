@@ -12,11 +12,11 @@ mongoose.connect(config.dbUrl)
         .catch((e) => console.error(e));
 
 app.use(express.json());
+app.use('/', express.static('public'));
 routerApi(app);
 
-app.use('/', express.static('public'));
-
-//app.use(apiError.logErrors);
+/* Error Middleware */
+app.use(apiError.logErrors);
 app.use(apiError.clientErrorHandler);
 app.use(apiError.errorHandler);
 
