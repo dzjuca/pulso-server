@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config');
 const routerApi = require('./network/routes');
-const { logErrors, errorHandler, boomErrorHandler } = require('./middlewares/error');
+const apiError = require('./middlewares/error');
 
 var app = express();
 
@@ -15,9 +15,10 @@ app.use(express.json());
 routerApi(app);
 
 app.use('/', express.static('public'));
-app.use(logErrors);
-app.use(boomErrorHandler);
-app.use(errorHandler);
+
+//app.use(apiError.logErrors);
+app.use(apiError.clientErrorHandler);
+app.use(apiError.errorHandler);
 
 app.listen(3000, () => {
     console.log('La aplicación está ecuchando en el puerto: '+ config.port);

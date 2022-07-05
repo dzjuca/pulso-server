@@ -1,23 +1,27 @@
-const boom = require('@hapi/boom');
-
 function logErrors (err, req, res, next) {
-  console.error(err);
+  console.log('[logErrors]: ');
+  console.error(err.stack);
   next(err);
+}
+
+function clientErrorHandler(err, req, res, next) {
+  console.log('[clientErrorHandler]: ');
+  if (req.xhr) {
+    res.status(500).send({ error: 'Something failed!' });
+  } else {
+    next(err);
+  }
 }
 
 function errorHandler(err, req, res, next) {
-  res.status(500).json({
-    message: err.message,
-    stack: err.stack,
-  });
-}
-
-function boomErrorHandler(err, req, res, next) {
-  if (err.isBoom) {
-    const { output } = err;
-    res.status(output.statusCode).json(output.payload);
+  console.log('[errorHandler]: ');
+  if (res.headersSent) {
+    return next(err);
   }
-  next(err);
+  res.status(500).send({message:err.message});
+  //res.render('error', { error: err });
 }
 
-module.exports = { logErrors, errorHandler, boomErrorHandler };
+const apiError = { logErrors, clientErrorHandler, errorHandler };
+
+module.exports = apiError;
