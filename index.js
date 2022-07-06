@@ -6,16 +6,17 @@ const apiError = require('./middlewares/error');
 
 var app = express();
 
-/* DataBase connection */
+/* DataBase connection ,{useNewUrlParser:true} */ 
 mongoose.connect(config.dbUrl)
         .then(() => console.log('Connected to MongoDB-Atlas PulsoDatabase'))
         .catch((e) => console.error(e));
 
+/* Middleware Functions */
 app.use(express.json());
 app.use('/', express.static('public'));
 routerApi(app);
 
-/* Error Middleware */
+/* Handler Error Middleware */
 app.use(apiError.logErrors);
 app.use(apiError.clientErrorHandler);
 app.use(apiError.errorHandler);
