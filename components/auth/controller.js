@@ -6,29 +6,33 @@ module.exports = function(injectedStore){
     let store = injectedStore;
 
     async function login(username, password){
-        const data = await store.getAuth({username: username});
-        return bcrypt.compare(password, data.password)
-                     .then((areEqual) => {
-                        if (areEqual === true){
-                            return auth.sing({...data});
-                        }
-                     })
-                     .catch((e) => {
-                        throw boom.unauthorized('Error en login_controller');
-                     });
+        try {
+            const data = await store.getAuth(username);
+            console.log('[data]: ', data);
+            console.log('[{...data}]: ', {...data});
+
+            const areEqual = await bcrypt.compare(password, data.password);
+            if (areEqual === false){
+               throw boom.unauthorized();
+            }
+            return auth.sing({...data});
+        } catch (error) {
+            throw error;
+        }
     }
 
     async function updateAuth(userId, newAuthData){
 
+        console.log('[newAuthData]: ', newAuthData);
+        let _newAuth = newAuthData;
         if(newAuthData.password){
-            const hash = await bcrypt.hash(newAuth.password, 10);
-            const _newAuth = {
-                ...newAuth,
+            const hash = await bcrypt.hash(newAuthData.password, 10);
+            _newAuth = {
+                ...newAuthData,
                 password: hash
               };
-        }else{
-           const _newAuth = newAuthData;
         }
+        console.log('[_newAuth]: ', _newAuth);
         const response = await store.updateAuth(userId, _newAuth);
         if(response.modifiedCount === 0){
             throw boom.badRequest();
@@ -53,7 +57,7 @@ module.exports = function(injectedStore){
     }
 
     async function deleteAuth(userId){
-        const response = await store.deleteUser(userId);
+        const response = await store.deleteAuth(userId);
         if(response.deletedCount === 0){
             throw boom.notFound();
         }

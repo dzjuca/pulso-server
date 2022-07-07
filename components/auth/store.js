@@ -8,7 +8,6 @@ async function getAuth(username){
     } catch (error) {
         throw boom.internal();
     }
- 
 }
 
 async function insertAuth(auth){
@@ -17,7 +16,6 @@ async function insertAuth(auth){
         const response = await newAuth.save();
         return response;
     } catch (error) {
-        //throw boom.internal();
         throw error;
     }
 
@@ -25,7 +23,7 @@ async function insertAuth(auth){
 
 async function updateAuth(userId, newAuthdata){
     try {
-        const response = await User.updateOne( { _id: userId}, { $set: newAuthdata } );
+        const response = await Auth.updateOne( { _id: userId}, { $set: newAuthdata } );
         return response;
     } catch (error) {
         throw boom.internal();

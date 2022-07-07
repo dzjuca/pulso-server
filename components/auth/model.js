@@ -10,10 +10,6 @@ const authSchema = new Schema({
     password: {
         type:String,
         required:true
-    },
-    createdOn: { 
-        type: Date, 
-        default: Date.now 
     }
 });
 

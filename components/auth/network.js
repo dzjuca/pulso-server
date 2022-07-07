@@ -9,7 +9,9 @@ router.post('/login', (req, res, next) => {
               .then((token) => {
                 response.success(req, res, token, 200);
               })
-              .catch(next);
+              .catch((e) => {
+                next(e);
+              });
 });
 
 module.exports = router;
