@@ -1,5 +1,6 @@
 const boom = require('@hapi/boom');
 const express = require('express');
+const secure = require('./secure');
 const response = require('../../network/response');
 const controller = require('./controller');
 const router = express.Router();
@@ -7,7 +8,7 @@ const router = express.Router();
 router.post('/', addUser);
 router.get('/', listUsers);
 router.get('/:userId', getUser);
-router.put('/:userId', updateUser);
+router.put('/:userId',secure('update'), updateUser);
 router.delete('/:userId',deleteUser);
 
 function addUser(req, res, next){

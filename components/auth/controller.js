@@ -8,14 +8,16 @@ module.exports = function(injectedStore){
     async function login(username, password){
         try {
             const data = await store.getAuth(username);
-            console.log('[data]: ', data);
-            console.log('[{...data}]: ', {...data});
-
             const areEqual = await bcrypt.compare(password, data.password);
             if (areEqual === false){
                throw boom.unauthorized();
             }
-            return auth.sing({...data});
+            const _firma = {
+                _id:data._id,
+                username: data.username,
+            };
+            //return auth.sign({...data});
+            return auth.sign(_firma);
         } catch (error) {
             throw error;
         }

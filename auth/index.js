@@ -2,9 +2,19 @@ const boom = require('@hapi/boom');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
 
+/* borar */
+const passport = require('passport');
+const LocalStrategy = require('./strategies/local.strategy');
+const JwtStrategy = require('./strategies/jwt.strategy');
+passport.use(LocalStrategy);
+passport.use(JwtStrategy);
+/* ------ */
+
 const secret = config.jwt.secret;
 
-function sing(data){
+function sign(data){
+    console.log('[data_sign]: ',data);
+    console.log('[s_sign]: ',secret);
     return jwt.sign(data, secret);
 }
 
@@ -35,7 +45,7 @@ function decodeHeader(req){
 const check = {
     own: function(req, owner){
         const decoded = decodeHeader(req);
-        console.log(decoded);
+        console.log('[own]: ', decoded);
 
         if(decoded.id !== owner){
             throw boom.authorization();
@@ -47,4 +57,4 @@ const check = {
     }
 };
 
-module.exports = { sing, check };
+module.exports = { sign, check };
