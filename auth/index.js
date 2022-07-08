@@ -1,15 +1,6 @@
 const boom = require('@hapi/boom');
 const jwt = require('jsonwebtoken');
 const config = require('../config');
-
-/* borar */
-const passport = require('passport');
-const LocalStrategy = require('./strategies/local.strategy');
-const JwtStrategy = require('./strategies/jwt.strategy');
-passport.use(LocalStrategy);
-passport.use(JwtStrategy);
-/* ------ */
-
 const secret = config.jwt.secret;
 
 function sign(data){

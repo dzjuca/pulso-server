@@ -1,6 +1,9 @@
 const bcrypt = require('bcrypt');
 const auth = require('../../auth');
 const boom = require('@hapi/boom');
+const config = require('../../config');
+const secret = config.jwtSecret;
+const jwt = require('jsonwebtoken');
 
 module.exports = function(injectedStore){
     let store = injectedStore;
@@ -12,12 +15,11 @@ module.exports = function(injectedStore){
             if (areEqual === false){
                throw boom.unauthorized();
             }
-            const _firma = {
+            const userAuth = {
                 _id:data._id,
                 username: data.username,
             };
-            //return auth.sign({...data});
-            return auth.sign(_firma);
+            return userAuth;
         } catch (error) {
             throw error;
         }
@@ -66,5 +68,14 @@ module.exports = function(injectedStore){
         return response;
     }
 
-    return { login, insertAuth, updateAuth, deleteAuth};
+    async function signToken(userPayload) {
+        const payload = {
+          sub: userPayload._id,
+          username: userPayload.username
+        };
+        const token = await jwt.sign(payload, secret);
+        return token;
+    }
+
+    return { login, insertAuth, updateAuth, deleteAuth, signToken};
 };

@@ -1,8 +1,11 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const passport = require('passport');
 const config = require('./config');
 const routerApi = require('./network/routes');
+const routerPassport = require('./auth/routes');
 const apiError = require('./middlewares/error');
+
 
 var app = express();
 
@@ -14,6 +17,7 @@ mongoose.connect(config.dbUrl)
 /* Middleware Functions */
 app.use(express.json());
 app.use('/', express.static('public'));
+routerPassport(passport);
 routerApi(app);
 
 /* Handler Error Middleware */

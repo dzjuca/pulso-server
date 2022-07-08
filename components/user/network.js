@@ -1,15 +1,16 @@
 const boom = require('@hapi/boom');
 const express = require('express');
 const secure = require('./secure');
+const passport = require('passport');
 const response = require('../../network/response');
 const controller = require('./controller');
 const router = express.Router();
 
 router.post('/', addUser);
-router.get('/', listUsers);
-router.get('/:userId', getUser);
-router.put('/:userId',secure('update'), updateUser);
-router.delete('/:userId',deleteUser);
+router.get('/',           passport.authenticate('jwt', {session: false}), listUsers);
+router.get('/:userId',    passport.authenticate('jwt', {session: false}), getUser);
+router.put('/:userId',    passport.authenticate('jwt', {session: false}), updateUser);
+router.delete('/:userId', passport.authenticate('jwt', {session: false}), deleteUser);
 
 function addUser(req, res, next){
     const newUser = req.body;
@@ -30,7 +31,6 @@ function listUsers (req, res, next){
             next(e);
         });
 }
-
 function getUser(req, res, next){
     const { userId } = req.params;
     controller.getUser(userId)
@@ -41,7 +41,6 @@ function getUser(req, res, next){
             next(e);
         });
 }
-
 function updateUser(req, res, next){
     const newUserData = req.body;
     const userId = req.params.userId;
@@ -53,7 +52,6 @@ function updateUser(req, res, next){
             next(e);
         });
 }
-
 function deleteUser(req, res, next){
     const userId = req.params.userId;
     controller.deleteUser(userId)
@@ -64,7 +62,6 @@ function deleteUser(req, res, next){
             next(e);
         });
 }
-
 module.exports = router;
 
 
