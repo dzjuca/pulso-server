@@ -26,8 +26,6 @@ module.exports = function(injectedStore){
     }
 
     async function updateAuth(userId, newAuthData){
-
-        console.log('[newAuthData]: ', newAuthData);
         let _newAuth = newAuthData;
         if(newAuthData.password){
             const hash = await bcrypt.hash(newAuthData.password, 10);
@@ -36,11 +34,7 @@ module.exports = function(injectedStore){
                 password: hash
               };
         }
-        console.log('[_newAuth]: ', _newAuth);
         const response = await store.updateAuth(userId, _newAuth);
-        if(response.modifiedCount === 0){
-            throw boom.badRequest();
-        }
         return response;
     }
 
@@ -68,13 +62,12 @@ module.exports = function(injectedStore){
         return response;
     }
 
-    async function signToken(userPayload) {
-        const payload = {
-          sub: userPayload._id,
-          username: userPayload.username
-        };
+    async function signToken(userAuth) {
+        console.log('[signToken]:userAuth: ', userAuth);
+        const payload = userAuth;
         const token = await jwt.sign(payload, secret);
-        return token;
+        userAuth.token = token;
+        return userAuth;
     }
 
     return { login, insertAuth, updateAuth, deleteAuth, signToken};

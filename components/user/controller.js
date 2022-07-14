@@ -8,21 +8,19 @@ async function addUser(data){
         throw boom.badData();
     }
     const newUser = {
-        name: data.name,
         username: data.username,
         email: data.email
     };
     const user = await store.addUser(newUser);
+    if(!user){
+        throw boom.notFound();
+     }
     const newAuth = {
         _id: user._id,
         username: data.username,
         password: data.password
       };
     await auth.insertAuth(newAuth);
-   
-    if(!user){
-        throw boom.notFound();
-     }
     return user;
 }
 
@@ -48,22 +46,17 @@ async function updateUser(userId, newUserData){
             password: newUserData.password
         };
         await auth.updateAuth(userId, newAuthData);
-    }else{ 
-
-        if(newUserData.username){
-            const newAuthData = {
-                username: newUserData.username
-            };
-            await auth.updateAuth(userId, newAuthData);
-        }
-
-        const response = await store.updateUser(userId, newUserData);
-                     
-        if(response.modifiedCount === 0){
-            throw boom.badRequest();
-        }
-        return response;
     }
+    if(newUserData.username){
+        const newAuthData = {
+            username: newUserData.username
+        };
+        await auth.updateAuth(userId, newAuthData);
+    }
+
+    const response = await store.updateUser(userId, newUserData);
+                     
+    return response;
 }
 
 async function deleteUser(userId){

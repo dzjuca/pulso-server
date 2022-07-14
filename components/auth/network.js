@@ -9,8 +9,8 @@ router.post('/login',
     passport.authenticate('local', {session: false}),
     (req, res, next) => {
         Controller.signToken(req.user)
-                  .then((token) => {
-                    response.success(req, res, token, 200);
+                  .then((userAuth) => {
+                    response.success(req, res, userAuth, 200);
                   })
                   .catch((e) => {
                     next(e);

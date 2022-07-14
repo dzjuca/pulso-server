@@ -46,7 +46,12 @@ function updateUser(req, res, next){
     const userId = req.params.userId;
     controller.updateUser(userId, newUserData)
         .then((data) => {
-            response.success(req, res, data, 201);
+            console.log('[controller:user:updateUser:data]: ', data);
+            if(data.modifiedCount === 0){
+                response.success(req, res, 'No se realizaron modificaciones', 201);
+            }else{
+                response.success(req, res, 'Modificado correctamente', 201);
+            }
         })
         .catch((e) => {
             next(e);
