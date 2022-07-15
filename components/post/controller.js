@@ -29,8 +29,12 @@ async function listPosts(req){
                                   .sort({_id:-1})
                                   .skip(skip)
                                   .populate('usuario'); 
+    const resp = {
+        page: page,
+        posts: listPostDB
+    };
                                                      
-    return listPostDB;
+    return resp;
 }
 
 async function uploadFiles(req){

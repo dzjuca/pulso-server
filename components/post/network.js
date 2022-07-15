@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.post('/',                  passport.authenticate('jwt', {session: false}), addPost);
 router.post('/upload',            passport.authenticate('jwt', {session: false}), uploadFiles);
-router.get('/',                   passport.authenticate('jwt', {session: false}), listPosts);
+router.get('/',                   listPosts);
 router.get('/image/:userId/:img', passport.authenticate('jwt', {session: false}), getImage);
 
 
