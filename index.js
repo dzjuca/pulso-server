@@ -32,9 +32,15 @@ app.use(function (req, res, next) {
 */
 
 /* Middleware Functions */
+/* ----- bodyParser ----- */
 app.use( bodyParser.urlencoded({extended:true}));
 app.use( bodyParser.json());
+
+/* ----- cors ----- */
 app.use(cors({origin:true, credentials:true}));
+
+/* ----- fileUpload ----- */
+app.use(fileUpload({useTempFiles: true}));
 
 app.use('/pulso', express.static('public'));
 routerPassport(passport);
