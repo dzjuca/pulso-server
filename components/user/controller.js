@@ -4,24 +4,49 @@ const auth = require('../auth');
 
 
 async function addUser(data){
-    if(!data){
-        throw boom.badData();
+
+    try {
+
+        if(!data){
+            throw boom.badData();
+        }
+        const newUser = {
+            username: data.username,
+            email: data.email
+        };
+        const user = await store.addUser(newUser);
+        if(!user){
+            throw boom.notFound();
+         }
+        const newAuth = {
+            _id: user._id,
+            username: data.username,
+            password: data.password
+          };
+        await auth.insertAuth(newAuth);
+        return user;
+        
+    } catch (error) {
+
+        if(error.message.indexOf("11000") != -1){
+            if(error.message.indexOf('username') != -1){
+
+                throw boom.badData('usuario no disponible');
+            }
+
+            if(error.message.indexOf('email') != -1){
+
+                throw boom.badData('Este correo ya está registrado');
+
+            }
+        }else{
+
+            throw boom.internal('Error en el servidor');
+
+        }
+         
     }
-    const newUser = {
-        username: data.username,
-        email: data.email
-    };
-    const user = await store.addUser(newUser);
-    if(!user){
-        throw boom.notFound();
-     }
-    const newAuth = {
-        _id: user._id,
-        username: data.username,
-        password: data.password
-      };
-    await auth.insertAuth(newAuth);
-    return user;
+
 }
 
 async function getUser(userId){
@@ -68,12 +93,26 @@ async function deleteUser(userId){
     return response;
 }
 
+async function getUserByToken(req){
+
+   const userId =  req.user._id;
+
+   console.log('[getUserByToken:UserController]: ', req.headers.authorization);
+
+   const user = await store.getUser(userId);
+   if(!user){
+       throw boom.notFound('usuario no existente');
+   }
+   return user; 
+}
+
 const controller = {
     addUser,
     listUsers,
     getUser,
     updateUser,
     deleteUser,
+    getUserByToken
 };
 
 module.exports = controller;

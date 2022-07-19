@@ -19,6 +19,16 @@ mongoose.connect(config.dbUrl)
 
 /* Funciones no utilizadas --------
 app.use(express.json());
+*/
+
+/* Middleware Functions */
+/* ----- bodyParser ----- */
+app.use( bodyParser.urlencoded({extended:true}));
+app.use( bodyParser.json());
+
+/* ----- cors ----- */
+app.use(cors({origin:true, credentials:true}));
+/*
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
     res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
@@ -31,13 +41,6 @@ app.use(function (req, res, next) {
 });
 */
 
-/* Middleware Functions */
-/* ----- bodyParser ----- */
-app.use( bodyParser.urlencoded({extended:true}));
-app.use( bodyParser.json());
-
-/* ----- cors ----- */
-app.use(cors({origin:true, credentials:true}));
 
 /* ----- fileUpload ----- */
 app.use(fileUpload({useTempFiles: true}));

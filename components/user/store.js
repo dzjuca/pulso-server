@@ -2,14 +2,9 @@ const boom = require('@hapi/boom');
 const User = require('./model');
 
 async function addUser(user){
-    try {
         const newUser = new User(user);
         const response = await newUser.save();
         return response;
-    } catch (error) {
-        //throw boom.internal();
-        throw error;
-    }
 }
 
 async function getUser(userId){

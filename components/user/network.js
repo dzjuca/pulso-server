@@ -7,10 +7,11 @@ const controller = require('./controller');
 const router = express.Router();
 
 router.post('/', addUser);
-router.get('/',           passport.authenticate('jwt', {session: false}), listUsers);
-router.get('/:userId',    passport.authenticate('jwt', {session: false}), getUser);
-router.put('/:userId',    passport.authenticate('jwt', {session: false}), updateUser);
-router.delete('/:userId', passport.authenticate('jwt', {session: false}), deleteUser);
+router.get('/',             passport.authenticate('jwt', {session: false}), listUsers);
+router.get('/:userId',      passport.authenticate('jwt', {session: false}), getUser);
+router.get('/user/bytoken', passport.authenticate('jwt', {session: false}), getUserByToken);
+router.put('/:userId',      passport.authenticate('jwt', {session: false}), updateUser);
+router.delete('/:userId',   passport.authenticate('jwt', {session: false}), deleteUser);
 
 function addUser(req, res, next){
     const newUser = req.body;
@@ -20,6 +21,7 @@ function addUser(req, res, next){
         })
         .catch((e) => {
             next(e);
+            //res.status(500).send({message:e.message});
         });
 }
 function listUsers (req, res, next){
@@ -62,6 +64,16 @@ function deleteUser(req, res, next){
     controller.deleteUser(userId)
         .then((data) => {
             response.success(req, res, data, 201);
+        })
+        .catch((e) => {
+            next(e);
+        });
+}
+function getUserByToken(req, res, next){
+    console.log('[getUserByToken:UserNetwork]: ', req.headers.authorization);
+    controller.getUserByToken(req)
+        .then((user) => {
+            response.success(req, res, user, 200);
         })
         .catch((e) => {
             next(e);
