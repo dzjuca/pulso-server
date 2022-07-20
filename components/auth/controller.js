@@ -4,8 +4,10 @@ const boom = require('@hapi/boom');
 const config = require('../../config');
 const secret = config.jwtSecret;
 const jwt = require('jsonwebtoken');
+const userController = require('../../components/user/controller');
 
 module.exports = function(injectedStore){
+
     let store = injectedStore;
 
     async function login(username, password){

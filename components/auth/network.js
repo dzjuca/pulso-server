@@ -5,9 +5,7 @@ const Controller = require('./index');
 
 const router = express.Router();
 
-router.post('/login', 
-    passport.authenticate('local', {session: false}),
-    (req, res, next) => {
+router.post('/login', passport.authenticate('local', {session: false}), (req, res, next) => {
         Controller.signToken(req.user)
                   .then((userAuth) => {
                     response.success(req, res, userAuth, 200);
