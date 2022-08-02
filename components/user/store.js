@@ -17,9 +17,18 @@ async function getUser(userId){
  
 }
 
-async function listUsers(){
+async function listUsers(req){
+    
     try {
-        const users = await User.find();
+        let users = [];
+        if(req.query.query){
+            let query = {username:{$regex: ''}};
+            query.username.$regex = req.query.query;
+            users = await User.find(query);
+        }else{
+            users = await User.find();
+        }
+
         return users;
     } catch (error) {
         throw boom.internal();

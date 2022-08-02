@@ -104,6 +104,46 @@ class FileSystem {
         return pathImage;
     }
 
+    imagesFromTempToProducts(userId){
+
+        const pathTemp = path.resolve( __dirname, '../uploads/', userId, 'temp');
+        const pathProduct = path.resolve( __dirname, '../uploads/', userId, 'products');
+
+        if(!fs.existsSync(pathTemp)){
+            return [];
+        }
+
+        if(!fs.existsSync(pathProduct)){
+            fs.mkdirSync(pathProduct);
+        }
+
+        const imagesTemp = this.getImagesTemp(pathTemp);
+
+        imagesTemp.forEach( image => {
+
+            fs.renameSync(`${pathTemp}/${image}`,`${pathProduct}/${image}`);
+
+        });
+
+        return imagesTemp;
+
+    }
+
+
+    getProductImageUrl(userId, img){
+
+        // path products
+        const pathImage = path.resolve(__dirname, '../uploads/', userId, 'products', img);
+
+        // img exists
+        const exists = fs.existsSync(pathImage);
+        if(!exists){
+            return path.resolve(__dirname, '../assets/default_400x250.jpg');
+        }
+
+        return pathImage;
+    }
+
 }
 
 module.exports = FileSystem;

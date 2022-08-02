@@ -25,7 +25,8 @@ function addUser(req, res, next){
         });
 }
 function listUsers (req, res, next){
-    controller.listUsers()
+    
+    controller.listUsers(req)
         .then((lista) => {
             response.success(req, res, lista, 200);
         })

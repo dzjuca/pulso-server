@@ -27,10 +27,13 @@ app.use( bodyParser.urlencoded({extended:true}));
 app.use( bodyParser.json());
 
 /* ----- cors ----- */
-app.use(cors({origin:true, credentials:true}));
+//app.use(cors({origin:true, credentials:true}));
+
 /*
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', "*");
+    res.header("Access-Control-Allow-Origin", "http://localhost:8100");
+    res.header("Access-Control-Allow-Headers", "Authorization");
     res.header('Access-Control-Allow-Methods', 'OPTIONS,GET,PUT,POST,DELETE');
     res.header('Access-Control-Allow-Headers', 'Content-Type');
     if (req.method == 'OPTIONS') {
@@ -40,6 +43,14 @@ app.use(function (req, res, next) {
     }
 });
 */
+
+app.use(cors({
+    credentials:true,
+    Access_Control_Allow_Origin: "*",
+    origin:"*",
+    methode:['GET','POST','PATCH','DELETE','PUT'],
+    allowedHeaders:'Content-Type, Authorization, Origin, X-Requested-With, Accept'
+  })); 
 
 
 /* ----- fileUpload ----- */

@@ -57,8 +57,8 @@ async function getUser(userId){
     return user; 
 }
 
-async function listUsers(){
-    const users = await store.listUsers();
+async function listUsers(req){
+    const users = await store.listUsers(req);
     if(!users){
         throw boom.notFound();
     }

@@ -8,7 +8,7 @@ const router = express.Router();
 router.post('/',                  passport.authenticate('jwt', {session: false}), addPost);
 router.post('/upload',            passport.authenticate('jwt', {session: false}), uploadFiles);
 router.get('/',                   listPosts);
-router.get('/image/:userId/:img', passport.authenticate('jwt', {session: false}), getImage);
+router.get('/image/:userId/:img', getImage);
 
 
 router.get('/:postId',    passport.authenticate('jwt', {session: false}), getPost);
@@ -36,6 +36,7 @@ function listPosts(req, res){
               });
 }
 async function uploadFiles(req, res){
+    console.log("🚀 ~ file: network.js ~ line 39 ~ uploadFiles ~ req", req.files);
     controller.uploadFiles(req)
               .then((file) =>{
                     res.json({
