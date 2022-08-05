@@ -65,7 +65,7 @@ app.use(apiError.logErrors);
 app.use(apiError.clientErrorHandler);
 app.use(apiError.errorHandler);
 
-app.listen(3000, () => {
+app.listen(config.port, () => {
     console.log('La aplicación está ecuchando en el puerto: '+ config.port);
 });
 
