@@ -134,6 +134,7 @@ class FileSystem {
 
         // path products
         const pathImage = path.resolve(__dirname, '../uploads/', userId, 'products', img);
+        console.log("🚀 ~ file: file-system.js ~ line 137 ~ FileSystem ~ getProductImageUrl ~ pathImage", pathImage);
 
         // img exists
         const exists = fs.existsSync(pathImage);

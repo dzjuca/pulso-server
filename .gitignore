@@ -219,3 +219,7 @@ $RECYCLE.BIN/
 .env
 
 # End of https://www.toptal.com/developers/gitignore/api/node,macos,windows,linux
+
+### imágenes en el servidor ###
+.jpeg 
+.png 

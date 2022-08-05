@@ -6,7 +6,7 @@ const controller = require('./controller');
 const router = express.Router();
 
 router.post('/',                  passport.authenticate('jwt', {session: false}), addProduct);
-router.get('/',                   passport.authenticate('jwt', {session: false}), listProducts);
+router.get('/',                                                                   listProducts);
 router.post('/upload',            passport.authenticate('jwt', {session: false}), uploadProductFiles);
 router.get('/image/:userId/:img', getProductImages);
 
@@ -45,6 +45,7 @@ function uploadProductFiles( req, res ){
 
 }
 function getProductImages( req, res ){
+    console.log("🚀 ~ file: network.js ~ line 48 ~ getProductImages ~ req", req.params);
     const pathImage = controller.getProductImages(req);
     res.sendFile( pathImage );
 }

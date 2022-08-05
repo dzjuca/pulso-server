@@ -59,7 +59,9 @@ async function uploadProductFiles( req ){
 }
 function getProductImages( req ){
     const userId = req.params.userId;
+    console.log("🚀 ~ file: controller.js ~ line 62 ~ getProductImages ~ userId", userId);
     const img = req.params.img;
+    console.log("🚀 ~ file: controller.js ~ line 64 ~ getProductImages ~ img", img);
     const pathImage = fileSystem.getProductImageUrl( userId, img);
     return pathImage;
 }

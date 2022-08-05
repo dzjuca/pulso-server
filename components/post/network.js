@@ -52,6 +52,7 @@ async function uploadFiles(req, res){
 
 }
 function getImage(req, res){
+    console.log("🚀 ~ file: network.js ~ line 55 ~ getImage ~ req", req.params);
     const pathImage = controller.getImage(req);
     res.sendFile( pathImage );
 }

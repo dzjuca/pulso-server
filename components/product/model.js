@@ -18,6 +18,9 @@ const productSchema = new Schema({
     stock: {
         type: String
     },
+    category: {
+        type: String
+    },
     usuario: {
         type: Schema.Types.ObjectId,
         ref: 'User'
