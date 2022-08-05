@@ -45,7 +45,6 @@ function uploadProductFiles( req, res ){
 
 }
 function getProductImages( req, res ){
-    console.log("🚀 ~ file: network.js ~ line 48 ~ getProductImages ~ req", req.params);
     const pathImage = controller.getProductImages(req);
     res.sendFile( pathImage );
 }
