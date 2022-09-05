@@ -226,9 +226,9 @@ $RECYCLE.BIN/
 
 ### Images ###
 # JPEG
-*.jpg
-*.jpeg
-*.jpe
+# *.jpg
+# *.jpeg
+# *.jpe
 *.jif
 *.jfif
 *.jfi
@@ -256,7 +256,7 @@ $RECYCLE.BIN/
 *.webp
 
 # Portable Network Graphics
-*.png
+# *.png
 
 # Animated Portable Network Graphics
 *.apng
