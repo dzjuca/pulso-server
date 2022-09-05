@@ -6,7 +6,7 @@ const controller = require('./controller');
 const router = express.Router();
 
 router.post('/',                  passport.authenticate('jwt', {session: false}), addProduct);
-router.get('/',                                                                   listProducts);
+router.get('/',                   listProducts);
 router.post('/upload',            passport.authenticate('jwt', {session: false}), uploadProductFiles);
 router.get('/image/:userId/:img', getProductImages);
 
@@ -27,7 +27,6 @@ function listProducts( req, res ){
     .catch((e) => {
       res.json(e);
     });
-
 }
 function uploadProductFiles( req, res ){
     controller.uploadProductFiles(req)
@@ -48,7 +47,5 @@ function getProductImages( req, res ){
     const pathImage = controller.getProductImages(req);
     res.sendFile( pathImage );
 }
-
-
 
 module.exports = router;

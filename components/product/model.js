@@ -4,7 +4,8 @@ const Schema = mongoose.Schema;
 const productSchema = new Schema({
 
     createdOn: {
-        type: Date
+        type: Date,
+        default: Date.now 
     },
     description: {
         type: String
@@ -28,10 +29,6 @@ const productSchema = new Schema({
 
 });
 
-productSchema.pre('save', function(next){
-    this.createdOn = new Date();
-    next();
-});
-
+productSchema.index({category:'text'});
 const model = mongoose.model('Product', productSchema);
 module.exports = model;

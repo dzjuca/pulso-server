@@ -36,7 +36,6 @@ function listPosts(req, res){
               });
 }
 async function uploadFiles(req, res){
-    console.log("🚀 ~ file: network.js ~ line 39 ~ uploadFiles ~ req", req.files);
     controller.uploadFiles(req)
               .then((file) =>{
                     res.json({
@@ -52,7 +51,6 @@ async function uploadFiles(req, res){
 
 }
 function getImage(req, res){
-    console.log("🚀 ~ file: network.js ~ line 55 ~ getImage ~ req", req.params);
     const pathImage = controller.getImage(req);
     res.sendFile( pathImage );
 }

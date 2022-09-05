@@ -2,6 +2,9 @@ const boom = require('@hapi/boom');
 const store = require('./store');
 const auth = require('../auth');
 
+const FileSystem = require('../../classes/file-system');
+const fileSystem = new FileSystem();
+
 
 async function addUser(data){
 
@@ -97,13 +100,53 @@ async function getUserByToken(req){
 
    const userId =  req.user._id;
 
-   console.log('[getUserByToken:UserController]: ', req.headers.authorization);
-
    const user = await store.getUser(userId);
    if(!user){
        throw boom.notFound('usuario no existente');
    }
    return user; 
+}
+
+async function updateAvatar(req){
+
+    if(!req.files){
+
+        throw boom.badData('No se subió ningún archivo');
+    }
+
+    const file = req.files.image;
+
+    if(!file){
+
+        throw boom.badData('No se subió ningún archivo de imagen');
+    }
+
+    if(!file.mimetype.includes('image')){
+
+        throw boom.badData('Lo que subió no es una imagen');
+    }
+   
+    await fileSystem.saveTemporalImage(file, req.user._id);
+    const images = fileSystem.imagesFromTempToAvatar( req.user._id);
+    const user = req.user;
+    user.avatar = images[0];
+    const responseDB = await store.updateUser(req.user._id, user);
+    const response = {
+        responseDB: responseDB,
+        image: images[0]
+    };
+
+    return response;
+
+}
+
+function getImage(req){
+
+    const userId = req.params.userId;
+    const img = req.params.img;
+    const pathImage = fileSystem.getAvatarImageUrl ( userId, img);
+    return pathImage;
+
 }
 
 const controller = {
@@ -112,8 +155,12 @@ const controller = {
     getUser,
     updateUser,
     deleteUser,
-    getUserByToken
+    getUserByToken,
+    updateAvatar,
+    getImage
 };
+
+
 
 module.exports = controller;
 

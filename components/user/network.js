@@ -10,7 +10,9 @@ router.post('/', addUser);
 router.get('/',             passport.authenticate('jwt', {session: false}), listUsers);
 router.get('/:userId',      passport.authenticate('jwt', {session: false}), getUser);
 router.get('/user/bytoken', passport.authenticate('jwt', {session: false}), getUserByToken);
+router.get('/image/:userId/:img', getImage);
 router.put('/:userId',      passport.authenticate('jwt', {session: false}), updateUser);
+router.put('/avatar/:userId',      passport.authenticate('jwt', {session: false}), updateAvatar);
 router.delete('/:userId',   passport.authenticate('jwt', {session: false}), deleteUser);
 
 function addUser(req, res, next){
@@ -49,7 +51,6 @@ function updateUser(req, res, next){
     const userId = req.params.userId;
     controller.updateUser(userId, newUserData)
         .then((data) => {
-            console.log('[controller:user:updateUser:data]: ', data);
             if(data.modifiedCount === 0){
                 response.success(req, res, 'No se realizaron modificaciones', 201);
             }else{
@@ -71,7 +72,6 @@ function deleteUser(req, res, next){
         });
 }
 function getUserByToken(req, res, next){
-    console.log('[getUserByToken:UserNetwork]: ', req.headers.authorization);
     controller.getUserByToken(req)
         .then((user) => {
             response.success(req, res, user, 200);
@@ -79,6 +79,34 @@ function getUserByToken(req, res, next){
         .catch((e) => {
             next(e);
         });
+}
+function updateAvatar(req, res, next){
+   
+    controller.updateAvatar(req)
+        .then((data) => {
+            if(data.responseDB.modifiedCount === 0){
+                //response.success(req, res, 'No se realizaron modificaciones', 201);
+                res.json({
+                    ok: true,
+                    message: 'No se realizaron modificaciones',
+                    avatar: data.image
+                });
+            }else{
+                //response.success(req, res, 'Modificado correctamente', 201);
+                res.json({
+                    ok: true,
+                    message:'Modificado correctamente',
+                    avatar: data.image
+                });
+            }
+        })
+        .catch((e) => {
+            next(e);
+        });
+}
+function getImage(req, res){
+    const pathImage = controller.getImage(req);
+    res.sendFile( pathImage );
 }
 module.exports = router;
 

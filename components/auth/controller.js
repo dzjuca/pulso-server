@@ -65,7 +65,6 @@ module.exports = function(injectedStore){
     }
 
     async function signToken(userAuth) {
-        console.log('[signToken]:userAuth: ', userAuth);
         const payload = userAuth;
         const token = await jwt.sign(payload, secret);
         userAuth.token = token;

@@ -23,11 +23,11 @@ async function listProducts( req ){
     let skip = page - 1;
     const limit = 5;
     skip = skip*limit;
-    const listProductsDB = await store.listProducts()
-                                  .limit(limit)
-                                  .sort({_id:-1})
-                                  .skip(skip)
-                                  .populate('usuario'); 
+    const listProductsDB = await store.listProducts(req)
+                                        .limit(limit)
+                                        .sort({_id:-1})
+                                        .skip(skip)
+                                        .populate('usuario');                   
     const resp = {
         page: page,
         products: listProductsDB

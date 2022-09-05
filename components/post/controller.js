@@ -36,7 +36,6 @@ async function listPosts(req){
                                                      
     return resp;
 }
-
 async function uploadFiles(req){
 
     if(!req.files){
@@ -60,7 +59,6 @@ async function uploadFiles(req){
 
     return file;
 }
-
 function getImage(req){
 
     const userId = req.params.userId;
@@ -69,12 +67,9 @@ function getImage(req){
     return pathImage;
 
 }
-
 function getPost(){
-
 }
 function updatePost(){
-
 }
 function deletePost(){
 }

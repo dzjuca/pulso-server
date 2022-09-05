@@ -129,17 +129,53 @@ class FileSystem {
 
     }
 
-
     getProductImageUrl(userId, img){
 
         // path products
         const pathImage = path.resolve(__dirname, '../uploads/', userId, 'products', img);
-        console.log("🚀 ~ file: file-system.js ~ line 137 ~ FileSystem ~ getProductImageUrl ~ pathImage", pathImage);
 
         // img exists
         const exists = fs.existsSync(pathImage);
         if(!exists){
             return path.resolve(__dirname, '../assets/default_400x250.jpg');
+        }
+
+        return pathImage;
+    }
+    imagesFromTempToAvatar(userId){
+
+        const pathTemp = path.resolve( __dirname, '../uploads/', userId, 'temp');
+        const pathAvatar = path.resolve( __dirname, '../uploads/', userId, 'avatar');
+
+        if(!fs.existsSync(pathTemp)){
+            return [];
+        }
+
+        if(!fs.existsSync(pathAvatar)){
+            fs.mkdirSync(pathAvatar);
+        }
+
+        const imagesTemp = this.getImagesTemp(pathTemp);
+
+        imagesTemp.forEach( image => {
+
+            fs.renameSync(`${pathTemp}/${image}`,`${pathAvatar}/${image}`);
+
+        });
+
+        return imagesTemp;
+
+    }
+
+    getAvatarImageUrl(userId, img){
+
+        // path avatar
+        const pathImage = path.resolve(__dirname, '../uploads/', userId, 'avatar', img);
+
+        // img exists
+        const exists = fs.existsSync(pathImage);
+        if(!exists){
+            return path.resolve(__dirname, '../assets/default_avatar.png');
         }
 
         return pathImage;
